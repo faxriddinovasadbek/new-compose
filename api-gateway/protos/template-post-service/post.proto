@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package post;
+
+option go_package = "/";
+
+
+service PostService {
+    rpc CreatePost(Post) returns (Post);
+    rpc GetPost(GetRequest) returns (Post);
+    rpc DeletePost(GetRequest) returns (Post);
+    rpc UpdatePost(Post) returns (Post);
+    rpc GetAllPost(PageLimit) returns (AllPosts);
+    
+    rpc GetPostWithOwner(GetRequest) returns (PostRespse);
+    rpc GetPostsOnwerId(GetRequest) returns (OwnerByPosts);
+}
+
+message OwnerByPosts{
+    string id = 1;
+    string name = 2;
+    string last_name = 3;
+    repeated Post post = 4;
+}
+
+message Post {
+    string id = 1;
+    string title = 2;
+    string image_url = 3;
+    string owner_id = 4;
+}
+
+message Owner {
+    string id = 1;
+    string name = 2;
+    string last_name =3;
+}
+
+message GetRequest {
+    string post_id = 1;
+}
+
+
+message PostRespse {
+    string id = 1;
+    string title = 2;
+    string image_url = 3;
+    Owner owner = 4;
+}
+
+message PageLimit {
+    int64 page = 1;
+    int64 limit = 2;
+}
+
+message AllPosts{
+    repeated Post all_post = 1;
+}

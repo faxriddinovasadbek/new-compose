@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package comment;
+
+option go_package = "/";
+
+service CommentService {
+    rpc CreateComment(createComment) returns (Comment);
+    rpc GetComment(GetRequest) returns (Comment);
+    rpc UpdateComment(Comment) returns (Comment);
+    rpc DeleteComment(GetRequest) returns (Comment);
+    rpc GetAllComment(GetAllCommentRequest) returns (Allcomment);
+}
+
+message Allcomment {
+    repeated Comment Allcomment = 1;
+}
+
+message Comment {
+    string id = 1;
+    string content = 2;
+    string createdAt = 3;
+    string updatedAt = 4;
+    string deletedAt = 5;
+    string post_id = 6;
+    string owner_id = 7;
+}
+
+
+message createComment {
+    string id = 1;
+    string content = 2;
+    string post_id = 6;
+    string owner_id = 7;
+}
+
+message GetRequest {
+    string id = 1;
+}
+
+message GetAllCommentRequest{
+    int64 page = 1;
+    int64 limit = 2;
+}

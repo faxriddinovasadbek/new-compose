@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = ".";
+
+message User {
+    string id = 1;
+    string name = 2;
+    string last_name = 3;
+    string email = 4;
+    string password = 5;
+    string user_name = 6;
+    string refresh_token = 7;
+}
+
+message EmailRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message GetRequest {
+    string user_id = 1;
+}
+
+message GetAllRequest {
+    int64 page = 1; 
+    int64 limit = 2;
+}
+
+message GetAllResponse{
+    repeated User allUsers = 1;
+}
+
+message CheckUniquesRequest {
+    string field = 1;
+    string value = 2;
+  }
+
+message RefreshToken {
+    string refresh_token = 1;
+}
+  
+  message CheckUniquesResponse {
+    bool is_exist = 1;
+  }
+
+service UserService {
+    rpc CreateUser(User) returns (User);
+    rpc GetUser(GetRequest) returns (User);
+    rpc DeleteUser(GetRequest) returns (User);
+    rpc UpdateUser(User) returns (User);
+    rpc GetAllUsers(GetAllRequest) returns (GetAllResponse);
+    rpc CheckUniques(CheckUniquesRequest) returns (CheckUniquesResponse);
+    rpc GetUserByEmail(EmailRequest) returns (User);
+    rpc GetUserByRefreshToken(RefreshToken) returns (User);
+}
+
+
