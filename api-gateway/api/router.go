@@ -11,6 +11,7 @@ import (
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -45,6 +46,14 @@ func New(option Option) *gin.Engine {
 		Enforcer:       option.CasbinEnforcer,
 	})
 
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowCredentials = true
+	corsConfig.AllowHeaders = []string{"*"}
+	corsConfig.AllowBrowserExtensions = true
+	corsConfig.AllowMethods = []string{"*"}
+	router.Use(cors.New(corsConfig))
+
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Use(middleware.NewAuthorizer(option.CasbinEnforcer, jwtHandler, option.Conf))
@@ -63,7 +72,6 @@ func New(option Option) *gin.Engine {
 	api.GET("/login", handlerV1.LogIn)
 	api.GET("/verification", handlerV1.Verification)
 	api.GET("/refreshusertoken", handlerV1.RefreshUserToken)
-
 
 	url := ginSwagger.URL("swaggerdoc.json")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
